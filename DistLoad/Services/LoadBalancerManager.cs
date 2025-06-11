@@ -1,5 +1,70 @@
-﻿using DistLoad.Interfaces;
+﻿//using DistLoad.Interfaces;
+//using DistLoad.Models;
+
+//namespace DistLoad.Services
+//{
+//    public class LoadBalancerManager : ILoadBalancer
+//    {
+//        private readonly List<ServerInstance> _servers;
+//        private ILoadBalancer _currentBalancer;
+//        private string _currentAlgorithm;
+
+//        public LoadBalancerManager(List<ServerInstance> servers)
+//        {
+//            _servers = servers;
+//            _currentAlgorithm = "adaptive";
+//            _currentBalancer = new /*RoundRobinBalancer*/AdaptiveBalancer(_servers);
+//        }
+
+//        public async Task<ServerInstance> GetNextServerAsync()
+//        {
+//            return await _currentBalancer.GetNextServerAsync();
+//        }
+
+//        public List<ServerInstance> GetServers()
+//        {
+//            return _servers;
+//        }
+
+//        public string GetCurrentAlgorithm()
+//        {
+//            return _currentAlgorithm;
+//        }
+
+//        public bool SetAlgorithm(string algorithm)
+//        {
+//            switch (algorithm.ToLower())
+//            {
+//                case "roundrobin":
+//                    _currentBalancer = new RoundRobinBalancer(_servers);
+//                    _currentAlgorithm = "roundrobin";
+//                    break;
+//                case "leastconnections":
+//                    _currentBalancer = new LeastConnectionsBalancer(_servers);
+//                    _currentAlgorithm = "leastconnections";
+//                    break;
+//                case "adaptive":
+//                    _currentBalancer = new AdaptiveBalancer(_servers);
+//                    _currentAlgorithm = "adaptive";
+//                    break;
+//                case "logmix":
+//                    _currentBalancer = new LogMixBalanser(_servers);
+//                    _currentAlgorithm = "logmix";
+//                    break;
+//                default:
+//                    return false;
+//            }
+//            return true;
+//        }
+//    }
+//}
+
+
+
+using DistLoad.Interfaces;
 using DistLoad.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DistLoad.Services
 {
@@ -12,13 +77,14 @@ namespace DistLoad.Services
         public LoadBalancerManager(List<ServerInstance> servers)
         {
             _servers = servers;
+            // Встановлюємо дефолтний адаптивний алгоритм
             _currentAlgorithm = "adaptive";
-            _currentBalancer = new /*RoundRobinBalancer*/AdaptiveBalancer(_servers);
+            _currentBalancer = new AdaptiveBalancer(_servers);
         }
 
-        public async Task<ServerInstance> GetNextServerAsync()
+        public Task<ServerInstance> GetNextServerAsync()
         {
-            return await _currentBalancer.GetNextServerAsync();
+            return _currentBalancer.GetNextServerAsync();
         }
 
         public List<ServerInstance> GetServers()
@@ -58,3 +124,5 @@ namespace DistLoad.Services
         }
     }
 }
+
+
